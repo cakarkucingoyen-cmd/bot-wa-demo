@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF‑8">
+<meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+<title>Pair Free Bot</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{
+  min-height:100vh;
+  background:linear-gradient(#111827,#1e3a5f,#111827);
+  color:#f3f4f6;padding:20px
+}
+.menu-bar{display:flex;gap:12px;margin-bottom:30px}
+.menu-bar button{padding:10px 16px;border:none;border-radius:8px;background:#334155;color:#fff}
+.box{max-width:380px;margin:0 auto;background:rgba(30,41,59,0.65);padding:22px;border-radius:14px}
+input{width:100%;padding:13px;background:#1e293b;border:none;border-radius:8px;color:#fff;margin:10px 0}
+button.aksi{width:100%;padding:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-weight:bold}
+#halAdmin{display:none;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="menu-bar">
+  <button onclick="bukaPair()">Pair free bot</button>
+  <button onclick="bukaAdmin()">Admin</button>
+</div>
+
+<div class="box" id="halPair">
+  <h3>Masukkan nomor (+62xxxx)</h3>
+  <input type="text" id="nomor">
+  <button class="aksi" onclick="ambilKode()">Pair Code</button>
+  <p id="hasilKode" style="margin-top:12px"></p>
+</div>
+
+<div class="box" id="halAdmin">
+  <h3>Masukkan kode admin</h3>
+  <input type="text" id="kodeAdmin">
+  <button class="aksi" onclick="cekAdmin()">Konfirmasi</button>
+  <div id="isiAdmin" style="display:none;margin-top:16px">
+    <h4>Tambah nomor owner</h4>
+    <input type="text" id="nomorOwner" placeholder="+62xxxx">
+    <button class="aksi" onclick="simpanOwner()">Simpan</button>
+  </div>
+</div>
+
+<script>
+function bukaPair(){
+  document.getElementById("halPair").style.display="block";
+  document.getElementById("halAdmin").style.display="none";
+}
+function bukaAdmin(){
+  document.getElementById("halPair").style.display="none";
+  document.getElementById("halAdmin").style.display="block";
+}
+async function ambilKode(){
+  const res = await fetch("/get‑pair");
+  const d = await res.json();
+  document.getElementById("hasilKode").innerText="Kode Pair: "+d.code;
+}
+async function cekAdmin(){
+  const k = document.getElementById("kodeAdmin").value;
+  if(k==="owner12345") document.getElementById("isiAdmin").style.display="block";
+  else alert("Kode salah!");
+}
+async function simpanOwner(){
+  const no = document.getElementById("nomorOwner").value;
+  await fetch("/set‑owner",{method:"POST",headers:{"Content‑Type":"application/json"},body:JSON.stringify({pass:"owner12345",no:no})});
+  alert("Tersimpan!");
+}
+</script>
+</body>
+  </html>
+  
