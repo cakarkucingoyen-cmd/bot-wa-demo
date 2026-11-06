@@ -1,0 +1,8 @@
+{
+  "name":"bot‑wa‑demo",
+  "version":"1.0.0",
+  "dependencies":{
+    "express":"^4.21.0",
+    "@whiskeysockets/baileys":"^6.7.0"
+  }
+}
